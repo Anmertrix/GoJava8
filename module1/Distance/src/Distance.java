@@ -6,9 +6,8 @@ import java.util.ArrayList;
 public class Distance {
 
 	public static void main(String[] args) throws IOException {
-		String numbersLine = readUserNumbersLine();
-		String[] piecesList = numbersLine.split(" ");
-		int[] numbersList = getUserNumbersList(piecesList);
+		String[] piecesList = readUserNumbersLine().split(" ");
+		ArrayList<Integer> numbersList = parseUserNumbersLine(piecesList);
 		int[] twoMinNumbers = getTwoMinNumbers(numbersList);
 		ArrayList<Integer> distanceList = getDistanceList(numbersList, twoMinNumbers);
 		printDistanseList(distanceList);
@@ -22,11 +21,11 @@ public class Distance {
 		return numbersLine;
 	}
 	
-	private static int[] getUserNumbersList(String[] piecesList) {
-		int[] numbersLine = new int[piecesList.length];
+	private static ArrayList<Integer> parseUserNumbersLine(String[] piecesList) {
+		ArrayList<Integer> numbersLine = new ArrayList<Integer>();
 		for (int i = 0; i < piecesList.length; i++) {
 			try {
-				numbersLine[i] = Integer.parseInt(piecesList[i]);
+				numbersLine.add(Integer.parseInt(piecesList[i]));
 			} catch(Exception e) {
 				System.out.println("You can enter only numbers. " + piecesList[i] + " is not a number.");
 			}   
@@ -35,16 +34,16 @@ public class Distance {
 		return numbersLine;
 	}
 	
-	private static int[] getTwoMinNumbers(int[] numbersList) {
-		int minNumber1 = numbersList[0];
-		int minNumber2 = numbersList[0];
-		for (int i = 0; i < numbersList.length; i++) {
-			if (numbersList[i] <= minNumber1) {
+	private static int[] getTwoMinNumbers(ArrayList<Integer> numbersList) {
+		int minNumber1 = numbersList.get(0);
+		int minNumber2 = numbersList.get(0);
+		for (int i = 0; i < numbersList.size(); i++) {
+			if (numbersList.get(i) <= minNumber1) {
 				minNumber2 = minNumber1;
-				minNumber1 = numbersList[i];
+				minNumber1 = numbersList.get(i);
 			}
-			else if (numbersList[i] <= minNumber2) {
-				minNumber2 = numbersList[i];
+			else if (numbersList.get(i) <= minNumber2) {
+				minNumber2 = numbersList.get(i);
 			}
 		}
 		int[] result = {minNumber1, minNumber2};
@@ -52,15 +51,15 @@ public class Distance {
 		return result;
 	}
 	
-	private static ArrayList<Integer> getDistanceList(int[] numbersList, int[] twoMinNumbers) {
+	private static ArrayList<Integer> getDistanceList(ArrayList<Integer> numbersList, int[] twoMinNumbers) {
 
 		int minNumber1 = twoMinNumbers[0];
 		int minNumber2 = twoMinNumbers[1];
 		ArrayList<Integer> distanceList = new ArrayList<Integer>();
 		
-		for (int i = 0; i < numbersList.length; i++) {
-			for (int j = i + 1; j < numbersList.length; j++) {
-				if (numbersList[i] == minNumber1 && numbersList[j] == minNumber2 || numbersList[i] == minNumber2 && numbersList[j] == minNumber1) {
+		for (int i = 0; i < numbersList.size(); i++) {
+			for (int j = i + 1; j < numbersList.size(); j++) {
+				if (numbersList.get(i) == minNumber1 && numbersList.get(j) == minNumber2 || numbersList.get(i) == minNumber2 && numbersList.get(j) == minNumber1) {
 					distanceList.add(j - i);
 				}
 			}
